@@ -10,7 +10,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.Add
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.stepwalker.R
 import java.util.*
+import kotlin.math.sign
 
 @Composable
 fun FirstScreen() {
@@ -46,6 +49,7 @@ fun FirstScreen() {
 
             StepsAllStatistic()
             FriendTab()
+            Discounts()
         }
     }
 }
@@ -186,41 +190,111 @@ fun MonthRecord() {
 
 @Composable
 fun FriendTab() {
-    Column(modifier = Modifier.padding(top = 20.dp)) {
-        Text("My Friends")
-        Row() {
-            /*it's better doing with LazyColumn*/
-            Box(modifier = Modifier.width(150.dp).border(1.dp, Color.Black)) {
-                    Image(painter = painterResource(id = R.drawable.man1),"friend",
+    Column(
+        modifier = Modifier
+            .padding(top = 20.dp)
+            .background(
+                Color(0xFFF7F7F8),
+                shape = RoundedCornerShape(45.dp)
+            )
+            //.border(1.dp, Color.Gray, shape = RoundedCornerShape(45.dp))
+            .shadow(
+                80.dp,
+                shape = RoundedCornerShape(50.dp)
+            )
+    )
+    {
+        Column(
+            modifier = Modifier
+                .padding(20.dp)
+        ) {
+            Box(Modifier.padding(bottom = 20.dp)) {
+                Text("My Friends".uppercase(), fontWeight = FontWeight.Bold)
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                /*it's better doing with LazyColumn*/
+                Box(
+                    modifier = Modifier.width(150.dp)//.border(1.dp, Color.Black)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.man1), "friend",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .size(45.dp)
-                            .clip(CircleShape) )
+                            .clip(CircleShape)
+                    )
 
-                    Image(painter = painterResource(id = R.drawable.man1), "friend",
+                    Image(
+                        painter = painterResource(id = R.drawable.man1), "friend",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .padding(start = 30.dp)
                             .size(45.dp)
-                            .clip(CircleShape))
+                            .clip(CircleShape)
+                    )
 
-                    Image(painter = painterResource(id = R.drawable.man1), "friend",
+                    Image(
+                        painter = painterResource(id = R.drawable.man1), "friend",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .padding(start = 60.dp)
                             .size(45.dp)
-                            .clip(CircleShape))
+                            .clip(CircleShape)
+                    )
 
-                Button(onClick = {},modifier = Modifier.padding(start = 90.dp).size(45.dp)
-                    .clip(CircleShape), ){
-                    Text("+4", fontSize = 8.sp)
+                    Button(
+                        onClick = {}, modifier = Modifier
+                            .padding(start = 90.dp)
+                            .size(45.dp)
+                            .clip(CircleShape),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFF7F7F8))
+                    ) {
+                        Text("+4", fontSize = 8.sp, color = Color(0xFF1F262A))
+                    }
                 }
-//                    Image(painter = painterResource(id = R.drawable.man1), "friend",
-//                        contentScale = ContentScale.Crop,
-//                        modifier = Modifier.padding(start = 90.dp)
-//                            .size(45.dp)
-//                            .clip(CircleShape))
 
+                Button(
+                    onClick = {}, shape = RoundedCornerShape(45.dp),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF1F262A))
+                ) {
+                    Row() {
+                        Icon(Icons.Filled.Add, "plus", tint = Color(0xFFF7F7F8))
+                        Text("Add new", color = Color(0xFFF7F7F8))
+                    }
+
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun Discounts() {
+    Column(modifier = Modifier.padding(top = 20.dp)) {
+        Text("Available discounts", fontWeight = FontWeight.Bold)
+        LazyColumn(modifier = Modifier.padding(top = 20.dp)) {
+            items(4) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Image(painterResource(id = R.drawable.mcdonald), "mc")
+                    Column(modifier = Modifier.weight(2f).padding(start = 20.dp)) {
+                        Text("McDonald's")
+                        Text("10% discount", color = Color.LightGray, fontSize = 12.sp)
+                    }
+                    Button(
+                        onClick = {}, shape = RoundedCornerShape(45.dp),
+                        colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFF7F7F8))
+                    ) {
+                        Text("$12")
+                    }
+                }
             }
         }
     }
