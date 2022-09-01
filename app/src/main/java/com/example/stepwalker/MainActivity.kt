@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.stepwalker.screens.FirstScreen
+import com.example.stepwalker.screens.ResultScreen
 import com.example.stepwalker.ui.theme.StepWalkerTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,7 +24,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    FirstScreen()
+                    //FirstScreen()
+                    ResultScreen()
                     //Greeting("Android")
                 }
             }
