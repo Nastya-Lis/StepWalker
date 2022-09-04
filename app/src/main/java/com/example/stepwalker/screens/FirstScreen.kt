@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -55,7 +56,8 @@ fun UserView() {
         modifier = Modifier
             .shadow(5.dp, shape = CircleShape)
             .padding()
-            .background(color = Color(0xFFF7F7F8), shape = CircleShape)
+            .background(color = Color(0xFFF7F7F8), shape = CircleShape),
+        verticalAlignment = Alignment.CenterVertically
 /*    border(1.dp, Color.Black, CircleShape)*/
     ) {
         Image(
@@ -246,7 +248,7 @@ fun FriendTab() {
                             .clip(CircleShape),
                         colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFFF7F7F8))
                     ) {
-                        Text("+4", fontSize = 8.sp, color = Color(0xFF1F262A))
+                        Text("+4", fontSize = 9.sp, color = Color(0xFF1F262A))
                     }
                 }
 
@@ -254,7 +256,7 @@ fun FriendTab() {
                     onClick = {}, shape = RoundedCornerShape(45.dp),
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color(0xFF1F262A))
                 ) {
-                    Row() {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Filled.Add, "plus", tint = Color(0xFFF7F7F8))
                         Text("Add new", color = Color(0xFFF7F7F8))
                     }
