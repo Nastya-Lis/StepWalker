@@ -1,9 +1,9 @@
 package com.example.stepwalker.screens
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.stepwalker.R
+import com.example.stepwalker.ui.theme.AccentPurple
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -167,19 +168,75 @@ fun UserInfo() {
 @Composable
 fun Timing() {
     val listOfTabs = listOf("All Time", "Week", "Month", "3 Months", "Half Year")
-    var tabCurrent by remember { mutableStateOf(0) }
-    ScrollableTabRow(selectedTabIndex = tabCurrent) {
-        listOfTabs.forEachIndexed { index, title ->
-            Tab(selected = tabCurrent == index,
-                onClick = { tabCurrent = index }, text = { Text("$title") })
+//    ScrollableTabRow(selectedTabIndex = tabCurrent) {
+//        listOfTabs.forEachIndexed { index, title ->
+//            Tab(selected = tabCurrent == index,
+//                onClick = { tabCurrent = index }, text = { Text("$title") })
+//        }
+//    }
+    CustomScrollableRow(items = listOfTabs)
+    //TabsContent(text = listOfTabs[tabCurrent])
+}
+
+@Composable
+fun CustomScrollableRow(items: List<String>){
+    val state = rememberScrollState()
+    var currentTab by remember { mutableStateOf(0)}
+    var selectedElementColor by remember { mutableStateOf(false)}
+
+    Row(modifier = Modifier.horizontalScroll(state)){
+        items.forEachIndexed{ index, title ->
+            Tab(modifier = Modifier.background(color = if(!selectedElementColor)
+                Color.White else Color.Blue,
+                shape = RoundedCornerShape(40.dp)),
+                selected = currentTab == index,
+                onClick = {currentTab = index
+                    selectedElementColor = true
+                },
+                text= {Text(title)})
         }
     }
-    TabsContent(text = listOfTabs[tabCurrent])
+
+    TabsContent(text = items[currentTab])
 }
 
 @Composable
 fun TabsContent(text: String) {
-    Column {
-        Text("$text")
+    Text(text)
+    LazyColumn() {
+        items(2) {
+            ComparisonTab(date = "12 Dec 2022")
+        }
+    }
+}
+
+
+@Composable
+fun ComparisonTab(date: String){
+    Column(modifier = Modifier.padding(horizontal = 40.dp, vertical = 12.dp)) {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween){
+            Image(painterResource(id = R.drawable.man1), "man",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(CircleShape))
+            Row(){
+                Icon(painterResource(id = R.drawable.calendar), "calendar",
+                 modifier = Modifier.size(15.dp))
+                Text(date)
+            }
+            Image(painterResource(id = R.drawable.man2), "man",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .size(60.dp)
+                    .clip(CircleShape)
+            )
+        }
+
+        Row(modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.SpaceBetween){
+            Text(text = "9324", fontSize = 30.sp)
+            Divider(modifier = Modifier.fillMaxHeight().width(1.dp), color = Color.Black)
+            Text(text = "6823" ,fontSize = 30.sp)
+        }
     }
 }

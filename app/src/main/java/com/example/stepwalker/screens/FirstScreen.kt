@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.stepwalker.R
+import com.example.stepwalker.ui.theme.*
 
 @Composable
 fun FirstScreen() {
@@ -124,9 +126,10 @@ fun StepsToday() {
         Row() {
             Image(
                 painterResource(id = R.drawable.footsteps_silhouette_variant),
-                "steps", modifier = Modifier.size(20.dp)
+                "steps", modifier = Modifier.size(20.dp),
+                 colorFilter = ColorFilter.tint(Color.White)
             )
-            Text("Steps today")
+            Text("Steps today", style = Typography.subtitle1)
         }
         Image(
             painterResource(id = R.drawable.profit),
@@ -135,9 +138,10 @@ fun StepsToday() {
                 .padding(vertical = 20.dp)
         )
         Text(
-            "4296",
-            fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold,
-            fontSize = 35.sp
+            "4 296",
+            style = Typography.body2
+            /*fontFamily = FontFamily.Serif, fontWeight = FontWeight.Bold,
+            fontSize = 35.sp*/
         )
         Text("of 9000")
     }

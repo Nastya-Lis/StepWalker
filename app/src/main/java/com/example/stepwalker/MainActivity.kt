@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    //FirstScreen()
+                   // FirstScreen()
                     ResultScreen()
                     //Greeting("Android")
                 }
