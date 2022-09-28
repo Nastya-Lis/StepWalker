@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
@@ -22,6 +23,9 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.stepwalker.R
+import com.example.stepwalker.ui.theme.AccentBlue
+import com.example.stepwalker.ui.theme.AccentGreen
+import com.example.stepwalker.ui.theme.AccentOrange
 import com.example.stepwalker.ui.theme.AccentPurple
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -43,10 +47,14 @@ fun TopRow() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 20.dp)
+            //.border(2.dp, Color.Black)
+            .padding(top = 20.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
 
         Button(
+            modifier = Modifier.weight(1f),
             onClick = {}, shape = RoundedCornerShape(50.dp),
             //modifier = Modifier.weight(1f),
             colors = ButtonDefaults.buttonColors(
@@ -56,11 +64,13 @@ fun TopRow() {
             Image(painterResource(id = R.drawable.back), "back button")
         }
         Box(
-            modifier = Modifier.weight(2f)//.border(1.dp, Color.Black)
+            modifier = Modifier
+                .weight(3f),
+            contentAlignment = Alignment.Center
         ) {
             Text("Results", fontWeight = FontWeight.Bold)
         }
-        //Spacer(modifier = Modifier)
+        Spacer(modifier = Modifier.weight(1f))
     }
 
 }
@@ -135,7 +145,7 @@ fun UserInfo() {
                 Column() {
                     Image(
                         painterResource(id = R.drawable.destination), "travel",
-                        colorFilter = ColorFilter.tint(Color.Green)
+                        colorFilter = ColorFilter.tint(AccentGreen)
                     )
                     Text("231 Routes", color = Color(0xFFF7F7F8))
                 }
@@ -145,7 +155,7 @@ fun UserInfo() {
                 Column() {
                     Image(
                         painterResource(id = R.drawable.badge), "badge",
-                        colorFilter = ColorFilter.tint(Color.Yellow)
+                        colorFilter = ColorFilter.tint(AccentOrange)
                     )
                     Text("Top 5", color = Color(0xFFF7F7F8))
                 }
@@ -155,7 +165,7 @@ fun UserInfo() {
                 Column() {
                     Image(
                         painterResource(id = R.drawable.friends), "friends",
-                        colorFilter = ColorFilter.tint(Color.Blue)
+                        colorFilter = ColorFilter.tint(AccentBlue)
                     )
                     Text("23 Friends", color = Color(0xFFF7F7F8))
                 }
@@ -168,6 +178,7 @@ fun UserInfo() {
 @Composable
 fun Timing() {
     val listOfTabs = listOf("All Time", "Week", "Month", "3 Months", "Half Year")
+
 //    ScrollableTabRow(selectedTabIndex = tabCurrent) {
 //        listOfTabs.forEachIndexed { index, title ->
 //            Tab(selected = tabCurrent == index,
@@ -179,21 +190,44 @@ fun Timing() {
 }
 
 @Composable
-fun CustomScrollableRow(items: List<String>){
+fun CustomScrollableRow(items: List<String>) {
     val state = rememberScrollState()
-    var currentTab by remember { mutableStateOf(0)}
-    var selectedElementColor by remember { mutableStateOf(false)}
+    var currentTab by remember { mutableStateOf(0) }
 
-    Row(modifier = Modifier.horizontalScroll(state)){
-        items.forEachIndexed{ index, title ->
-            Tab(modifier = Modifier.background(color = if(!selectedElementColor)
-                Color.White else Color.Blue,
-                shape = RoundedCornerShape(40.dp)),
+    var mapList = mutableMapOf("All Time" to true,"Week" to false, "Month" to false,
+        "3 Months" to false, "Half Year" to false
+    )
+    var itemWithSelected by remember { mutableStateOf(mapList) }
+
+   // var selectedElementColor by remember { mutableStateOf(false) }
+
+    Row(
+        modifier = Modifier
+            .horizontalScroll(state)
+            .padding(horizontal = 20.dp)
+    ) {
+        itemWithSelected.keys.forEachIndexed { index, title ->
+            Tab(modifier = Modifier.width(120.dp).padding(end = 12.dp)
+                .background(
+                color = if (itemWithSelected[title] == false)
+                    Color.White else AccentPurple,
+                shape = RoundedCornerShape(40.dp)
+            ),
                 selected = currentTab == index,
-                onClick = {currentTab = index
-                    selectedElementColor = true
+                onClick = {
+                    currentTab = index
+                    val itemsIterator = itemWithSelected.iterator()
+                    while(itemsIterator.hasNext()){
+                        val oldValue = itemsIterator.next()
+                        if(oldValue.key == title){
+                            oldValue.setValue(true)
+                        }
+                        else
+                            oldValue.setValue(false)
+                    }
+
                 },
-                text= {Text(title)})
+                text = { Text(title) })
         }
     }
 
@@ -204,39 +238,71 @@ fun CustomScrollableRow(items: List<String>){
 fun TabsContent(text: String) {
     Text(text)
     LazyColumn() {
-        items(2) {
-            ComparisonTab(date = "12 Dec 2022")
+        items(4) {
+            ComparisonTab(date = "12 Dec, 2022")
         }
     }
 }
 
 
 @Composable
-fun ComparisonTab(date: String){
-    Column(modifier = Modifier.padding(horizontal = 40.dp, vertical = 12.dp)) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween){
-            Image(painterResource(id = R.drawable.man1), "man",
+fun ComparisonTab(date: String) {
+    Column(
+        modifier = Modifier.padding(horizontal = 40.dp, vertical = 20.dp),
+        //.shadow(120.dp,shape = RoundedCornerShape(20))
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                //.border(2.dp, color = Color.Black)
+                .shadow(50.dp, shape = RoundedCornerShape(50.dp)),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Image(
+                painterResource(id = R.drawable.man2), "man",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(60.dp)
-                    .clip(CircleShape))
-            Row(){
-                Icon(painterResource(id = R.drawable.calendar), "calendar",
-                 modifier = Modifier.size(15.dp))
-                Text(date)
+                    .size(55.dp)
+                    .clip(CircleShape)
+            )
+            Row(
+                modifier = Modifier
+                    //.width(IntrinsicSize.Min)
+                    .weight(2f)
+                   // .border(2.dp, color = Color.Black)
+                    .shadow(21.dp, shape = RoundedCornerShape(30.dp)),
+                verticalAlignment = Alignment.Bottom,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    painterResource(id = R.drawable.calendar), "calendar",
+                    modifier = Modifier.size(15.dp)
+                )
+                Text(date, fontSize = 15.sp, modifier = Modifier.padding(start = 10.dp))
             }
-            Image(painterResource(id = R.drawable.man2), "man",
+            Image(
+                painterResource(id = R.drawable.man1), "man",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(60.dp)
+                    .size(55.dp)
                     .clip(CircleShape)
             )
         }
 
-        Row(modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Max), horizontalArrangement = Arrangement.SpaceBetween){
-            Text(text = "9324", fontSize = 30.sp)
-            Divider(modifier = Modifier.fillMaxHeight().width(1.dp), color = Color.Black)
-            Text(text = "6823" ,fontSize = 30.sp)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(IntrinsicSize.Max),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Text(text = "9324", fontSize = 30.sp, color = AccentGreen)
+            Divider(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(1.dp), color = Color.LightGray
+            )
+            Text(text = "6823", fontSize = 30.sp)
         }
     }
 }
