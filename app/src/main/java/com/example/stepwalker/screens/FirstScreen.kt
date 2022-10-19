@@ -1,7 +1,9 @@
 package com.example.stepwalker.screens
 
+import android.view.GestureDetector
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
@@ -24,11 +26,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.stepwalker.R
 import com.example.stepwalker.ui.theme.*
 
 @Composable
-fun FirstScreen() {
+fun FirstScreen(navHostController: NavHostController) {
     return Scaffold(modifier = Modifier.padding(top = 40.dp)) {
         Column(
             modifier = Modifier
@@ -44,8 +47,8 @@ fun FirstScreen() {
                 AdvancedSettingButton()
             }
 
-            StepsAllStatistic()
-            FriendTab()
+            StepsAllStatistic(navHostController)
+            FriendTab(navHostController)
             Discounts()
         }
     }
@@ -81,7 +84,9 @@ fun UserView() {
 @Composable
 fun AdvancedSettingButton() {
     IconButton(
-        onClick = { /*TODO*/ }, modifier = Modifier
+        onClick = {
+
+        }, modifier = Modifier
             .background(Color(0xFFF7F7F8))
             .fillMaxHeight()
             .width(60.dp)
@@ -97,14 +102,14 @@ fun AdvancedSettingButton() {
 }
 
 @Composable
-fun StepsAllStatistic() {
+fun StepsAllStatistic(navHostController: NavHostController) {
     Row(
         modifier = Modifier
             .padding(top = 40.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        StepsToday()
+        StepsToday(navHostController)
         Column() {
             WeekRecord()
             MonthRecord()
@@ -113,13 +118,13 @@ fun StepsAllStatistic() {
 }
 
 @Composable
-fun StepsToday() {
+fun StepsToday(navHostController: NavHostController) {
     Column(
         modifier = Modifier
             .background(
                 Color(0xFF7471FF),
                 shape = RoundedCornerShape(45.dp)
-            )
+            ).clickable(onClick = { navHostController.navigate("statistics") })
             .padding(30.dp)
         //.shadow(5.dp, shape = CircleShape)
     ) {
@@ -189,7 +194,7 @@ fun MonthRecord() {
 }
 
 @Composable
-fun FriendTab() {
+fun FriendTab(navHostController: NavHostController) {
     Column(
         modifier = Modifier
             .padding(top = 20.dp)
@@ -232,6 +237,7 @@ fun FriendTab() {
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .padding(start = 30.dp)
+                            .clickable(onClick = {navHostController.navigate("result")})
                             .size(45.dp)
                             .clip(CircleShape)
                     )

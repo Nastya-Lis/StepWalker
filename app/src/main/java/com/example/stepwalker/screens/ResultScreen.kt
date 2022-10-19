@@ -1,7 +1,6 @@
 package com.example.stepwalker.screens
 
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -18,31 +17,27 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.stepwalker.R
+import com.example.stepwalker.screens.generalFunc.TopRow
 import com.example.stepwalker.ui.theme.AccentBlue
 import com.example.stepwalker.ui.theme.AccentGreen
 import com.example.stepwalker.ui.theme.AccentOrange
 import com.example.stepwalker.ui.theme.AccentPurple
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
 
 @Composable
-fun ResultScreen() {
+fun ResultScreen(navHostController: NavHostController) {
     return Scaffold {
         Column {
-            TopRow()
+            TopRow("Result", navHostController)
             Result()
-
         }
     }
 }
 
-@Composable
+/*@Composable
 fun TopRow() {
     Row(
         modifier = Modifier
@@ -73,7 +68,7 @@ fun TopRow() {
         Spacer(modifier = Modifier.weight(1f))
     }
 
-}
+}*/
 
 @Composable
 fun Result() {
